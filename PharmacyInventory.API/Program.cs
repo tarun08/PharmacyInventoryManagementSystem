@@ -1,4 +1,6 @@
 
+using PharmacyInventory.API.Repositories.Implementations;
+using PharmacyInventory.API.Repositories.Interfaces;
 using PharmacyInventory.API.Services.Implementations;
 using PharmacyInventory.API.Services.Interfaces;
 
@@ -29,6 +31,7 @@ namespace PharmacyInventory.API
             });
 
             builder.Services.AddScoped<IInventoryService, InventoryService>();
+            builder.Services.AddScoped<IInventoryRepository, FileInventoryRepository>();
 
             var app = builder.Build();
 

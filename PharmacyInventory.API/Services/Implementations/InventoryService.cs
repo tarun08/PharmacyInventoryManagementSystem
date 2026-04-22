@@ -1,4 +1,5 @@
 ﻿using PharmacyInventory.API.Models;
+using PharmacyInventory.API.Repositories.Interfaces;
 using PharmacyInventory.API.Services.Interfaces;
 using System.Text.Json;
 
@@ -6,11 +7,16 @@ namespace PharmacyInventory.API.Services.Implementations
 {
     public class InventoryService : IInventoryService
     {
-        private static string JsonFilePath = Path.Join("Store", "medicines.json");
+        private readonly IInventoryRepository _inventoryRepository;
+
+        public InventoryService(IInventoryRepository inventoryRepository)
+        {
+            _inventoryRepository = inventoryRepository;
+        }
 
         List<Medicine> IInventoryService.GetAll(string? searchName, int limit, int offset)
         {
-            List<Medicine>? medicines = GetAllMedicines();
+            List<Medicine>? medicines = _inventoryRepository.GetAll();
 
             medicines = medicines?
                             .Where(x => string.IsNullOrEmpty(searchName) ||
@@ -24,7 +30,7 @@ namespace PharmacyInventory.API.Services.Implementations
 
         public bool Add(List<Medicine> medicinesToAdd)
         {
-            List<Medicine>? existingMedicines = GetAllMedicines();
+            List<Medicine>? existingMedicines = _inventoryRepository.GetAll();
 
             Dictionary<string, Medicine>? medicineMap = existingMedicines?
                                 .Where(x => x.FullName != null)
@@ -52,46 +58,9 @@ namespace PharmacyInventory.API.Services.Implementations
                 }
             }
 
-            List<Medicine>? mergedList = medicineMap?.Values?.ToList();
+            List<Medicine> mergedList = medicineMap == null ? new List<Medicine>() : medicineMap.Values.ToList();
 
-            return UpdateMedicines(mergedList);
-        }
-
-
-        private List<Medicine>? GetAllMedicines()
-        {
-            using (StreamReader reader = new StreamReader(JsonFilePath))
-            {
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-
-                string jsonString = reader.ReadToEnd();
-
-                return JsonSerializer.Deserialize<List<Medicine>>(jsonString, options);
-            }
-        }
-
-        private bool UpdateMedicines(List<Medicine>? medicinesToUpdate)
-        {
-            try
-            {
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                };
-                using (FileStream stream = new FileStream(JsonFilePath, FileMode.Create))
-                {
-                    JsonSerializer.Serialize(stream, medicinesToUpdate, options);
-                }
-                return true;
-            }
-            catch( Exception ex)
-            {
-                Console.WriteLine(ex);
-                throw;
-            }
+            return _inventoryRepository.Save(mergedList);
         }
     }
 }

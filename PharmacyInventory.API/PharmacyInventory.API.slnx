@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../PhramacyInventory.UnittTesting/PharmacyInventory.UnitTesting.csproj" Id="c2f752e8-c097-4338-88f4-f449aaf73db8" />
   <Project Path="PharmacyInventory.API.csproj" />
 </Solution>
