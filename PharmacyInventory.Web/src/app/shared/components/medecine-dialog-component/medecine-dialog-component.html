@@ -1,0 +1,32 @@
+<div class="container">
+    <h2>Add Medicine</h2>
+
+    <form [formGroup]="medicineForm" (ngSubmit)="onSubmit()">
+
+        <input placeholder="Full Name" formControlName="fullName">
+        <br>
+
+        <input placeholder="Notes" formControlName="notes">
+        <br>
+
+        <input type="date" formControlName="expiryDate">
+        <br>
+
+        <input type="number" placeholder="Quantity" formControlName="quantity">
+        <br>
+
+        <input type="number" placeholder="Price" formControlName="price">
+        <br>
+
+        <input placeholder="Brand" formControlName="brand">
+        <br><br>
+
+        <button type="submit" [disabled]="medicineForm.invalid">
+            Save
+        </button>
+        <button type="button" (click)="onCancel()">
+            Cancel
+        </button>
+
+    </form>
+</div>

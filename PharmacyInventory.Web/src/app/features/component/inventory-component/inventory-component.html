@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="header">
+        <h1 class="heading">Medicine Inventory</h1>
+
+        <div class="controls">
+            <div class="search-group">
+                <input class="search-box" (keyup.enter)="search()" type="text" [(ngModel)]="searchText"
+                    placeholder="Search medicines...">
+                <button class="search-button" (click)="search()">Search</button>
+                <button class="clear-button" (click)="clearSearch()">Clear</button>
+            </div>
+            <button class="add-button" (click)="openAddMedicineModal()">+ Add Medicine</button>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+                <tr class="table-row-heading">
+                    <th>Name</th>
+                    <th>Expiry Date</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Brand</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let med of medicines">
+                    <td>{{ med.fullName }}</td>
+                    <td [style.background-color]="med.expiryDate | expiryColor">
+                        {{ med.expiryDate | date:'mediumDate' }}
+                    </td>
+                    <td [style.background-color]="med.quantity | inverntoryColorPipe">
+                        {{ med.quantity }}
+                    </td>
+                    <td>{{ med.price | number:'1.2-2' }}</td>
+                    <td>{{ med.brand }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

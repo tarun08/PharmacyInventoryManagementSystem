@@ -1,0 +1,13 @@
+# Visual Studio / .NET build outputs
+**/bin/
+**/obj/
+**/.vs/
+**/*.user
+**/*.suo
+
+# Angular / Node.js outputs
+**/.angular/
+**/node_modules/
+
+# Editor settings
+**/.vscode/
