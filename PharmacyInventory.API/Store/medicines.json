@@ -1,56 +1,56 @@
 [
   {
-    "guid": "e4a1b7f8-7c1d-4c3e-a2f1-9b0d5c7a1234",
-    "fullName": "Paracetamol 500mg",
-    "notes": "Used for fever and mild pain relief",
-    "expiryDate": "2026-12-31",
-    "quantity": 25,
-    "price": 10.50,
-    "brand": "Cipla"
+    "Guid": "e4a1b7f8-7c1d-4c3e-a2f1-9b0d5c7a1234",
+    "FullName": "Paracetamol 500mg",
+    "Notes": "Used for fever and mild pain relief",
+    "ExpiryDate": "2026-12-31T00:00:00",
+    "Quantity": 525,
+    "Price": 10.50,
+    "Brand": "Cipla"
   },
   {
-    "guid": "a7d2c5b9-1f3e-4b6d-8a2f-4c5b9e7f6789",
-    "fullName": "Ibuprofen 200mg",
-    "notes": "Anti-inflammatory and pain reliever",
-    "expiryDate": "2026-06-15",
-    "quantity": 8,
-    "price": 15.00,
-    "brand": "Dr. Reddy's"
+    "Guid": "a7d2c5b9-1f3e-4b6d-8a2f-4c5b9e7f6789",
+    "FullName": "Ibuprofen 200mg",
+    "Notes": "Anti-inflammatory and pain reliever",
+    "ExpiryDate": "2026-06-15T00:00:00",
+    "Quantity": 8,
+    "Price": 15.00,
+    "Brand": "Dr. Reddy\u0027s"
   },
   {
-    "guid": "b9f3d2a1-2c4e-4d6b-9e1f-7a8c5d2b3456",
-    "fullName": "Amoxicillin 250mg",
-    "notes": "Antibiotic for bacterial infections",
-    "expiryDate": "2025-11-10",
-    "quantity": 5,
-    "price": 45.75,
-    "brand": "Sun Pharma"
+    "Guid": "b9f3d2a1-2c4e-4d6b-9e1f-7a8c5d2b3456",
+    "FullName": "Amoxicillin 250mg",
+    "Notes": "Antibiotic for bacterial infections",
+    "ExpiryDate": "2025-11-10T00:00:00",
+    "Quantity": 5,
+    "Price": 45.75,
+    "Brand": "Sun Pharma"
   },
   {
-    "guid": "c8e1f7b2-3a5d-4f2c-b9e3-2d7c1a8b9012",
-    "fullName": "Cetirizine 10mg",
-    "notes": "Antihistamine for allergy relief",
-    "expiryDate": "2027-03-20",
-    "quantity": 50,
-    "price": 12.00,
-    "brand": "Zydus"
+    "Guid": "c8e1f7b2-3a5d-4f2c-b9e3-2d7c1a8b9012",
+    "FullName": "Cetirizine 10mg",
+    "Notes": "Antihistamine for allergy relief",
+    "ExpiryDate": "2027-03-20T00:00:00",
+    "Quantity": 50,
+    "Price": 12.00,
+    "Brand": "Zydus"
   },
   {
-    "guid": "d3b7a5c9-6f1d-4e8b-8c2a-9f7d4b1e2345",
-    "fullName": "Azithromycin 500mg",
-    "notes": "Broad-spectrum antibiotic",
-    "expiryDate": "2025-09-05",
-    "quantity": 12,
-    "price": 89.99,
-    "brand": "Alkem"
+    "Guid": "d3b7a5c9-6f1d-4e8b-8c2a-9f7d4b1e2345",
+    "FullName": "Azithromycin 500mg",
+    "Notes": "Broad-spectrum antibiotic",
+    "ExpiryDate": "2025-09-05T00:00:00",
+    "Quantity": 12,
+    "Price": 89.99,
+    "Brand": "Alkem"
   },
   {
-    "guid": "f1c9e3b8-5d2a-4f7c-9a3e-6b2c1d8f5678",
-    "fullName": "Metformin 500mg",
-    "notes": "Used for type 2 diabetes management",
-    "expiryDate": "2027-01-01",
-    "quantity": 100,
-    "price": 5.25,
-    "brand": "USV"
+    "Guid": "f1c9e3b8-5d2a-4f7c-9a3e-6b2c1d8f5678",
+    "FullName": "Metformin 500mg",
+    "Notes": "Used for type 2 diabetes management",
+    "ExpiryDate": "2027-01-01T00:00:00",
+    "Quantity": 100,
+    "Price": 5.25,
+    "Brand": "USV"
   }
 ]

@@ -22,8 +22,9 @@ namespace PharmacyInventory.API.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<bool> Post([FromBody] List<Medicine> medicine)
         {
+            return _inventoryService.Add(medicine);
         }
     }
 }

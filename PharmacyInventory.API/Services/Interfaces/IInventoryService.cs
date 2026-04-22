@@ -6,7 +6,6 @@ namespace PharmacyInventory.API.Services.Interfaces
     {
         List<Medicine> GetAll(string? searchName, int limit, int offset);
 
-        public bool Add(List<Medicine> medicines);
-
+        bool Add(List<Medicine> medicinesToAdd);
     }
 }

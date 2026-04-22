@@ -69,8 +69,17 @@ export class InventoryComponent implements OnInit {
             if (result) {
                 console.log('Received from modal:', result);
 
-                this.medicines.update(prev => [...prev, result]);
+                this.addMedecine(result);
             }
+        });
+    }
+
+    addMedecine(med: Medicine) {
+        this.inventoryService.addMedicine([med]).subscribe({
+            next: (data) => {
+                 this.getMedicines();
+            },
+            error: (err) => console.error('Error adding medicine', err)
         });
     }
 }

@@ -7,15 +7,59 @@ namespace PharmacyInventory.API.Services.Implementations
     public class InventoryService : IInventoryService
     {
         private static string JsonFilePath = Path.Join("Store", "medicines.json");
-        bool IInventoryService.Add(List<Medicine> medicines)
-        {
-            throw new NotImplementedException();
-        }
 
         List<Medicine> IInventoryService.GetAll(string? searchName, int limit, int offset)
         {
-            List<Medicine>? medicines;
+            List<Medicine>? medicines = GetAllMedicines();
 
+            medicines = medicines?
+                            .Where(x => string.IsNullOrEmpty(searchName) ||
+                                        (!string.IsNullOrWhiteSpace(x.FullName) &&
+                                         x.FullName.Contains(searchName.Trim(), StringComparison.OrdinalIgnoreCase)))
+                            .Skip(offset * limit)
+                            .Take(limit).ToList();
+
+            return medicines ?? new List<Medicine>();
+        }
+
+        public bool Add(List<Medicine> medicinesToAdd)
+        {
+            List<Medicine>? existingMedicines = GetAllMedicines();
+
+            Dictionary<string, Medicine>? medicineMap = existingMedicines?
+                                .Where(x => x.FullName != null)
+                                .ToDictionary(
+                                    x => x.FullName.ToLower(),
+                                    x => x
+                                );
+
+            if(medicineMap != null)
+            {
+                foreach (var newMed in medicinesToAdd)
+                {
+                    if (newMed.FullName == null) continue;
+
+                    var key = newMed.FullName.ToLower();
+
+                    if (medicineMap.ContainsKey(key))
+                    {
+                        medicineMap[key].Quantity += newMed.Quantity;
+                    }
+                    else
+                    {
+                        medicineMap[key] = newMed;
+                    }
+                }
+            }
+
+            List<Medicine>? mergedList = medicineMap?.Values?.ToList();
+
+            return UpdateMedicines(mergedList);
+        }
+
+
+        private List<Medicine>? GetAllMedicines()
+        {
             using (StreamReader reader = new StreamReader(JsonFilePath))
             {
                 var options = new JsonSerializerOptions
@@ -25,17 +69,29 @@ namespace PharmacyInventory.API.Services.Implementations
 
                 string jsonString = reader.ReadToEnd();
 
-                medicines = JsonSerializer.Deserialize<List<Medicine>>(jsonString, options);
-
-                medicines = medicines?
-                            .Where(x => string.IsNullOrEmpty(searchName) ||
-                                        ( !string.IsNullOrWhiteSpace(x.FullName) &&
-                                         x.FullName.Contains(searchName.Trim(), StringComparison.OrdinalIgnoreCase)))
-                            .Skip(offset * limit)
-                            .Take(limit).ToList();
+                return JsonSerializer.Deserialize<List<Medicine>>(jsonString, options);
             }
+        }
 
-            return medicines ?? new List<Medicine>();
+        private bool UpdateMedicines(List<Medicine>? medicinesToUpdate)
+        {
+            try
+            {
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+                using (FileStream stream = new FileStream(JsonFilePath, FileMode.Create))
+                {
+                    JsonSerializer.Serialize(stream, medicinesToUpdate, options);
+                }
+                return true;
+            }
+            catch( Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
         }
     }
 }
