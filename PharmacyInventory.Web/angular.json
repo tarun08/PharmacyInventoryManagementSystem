@@ -64,11 +64,13 @@
               "buildTarget": "PharmacyInventory.Web:build:production"
             },
             "development": {
-              "buildTarget": "PharmacyInventory.Web:build:development"
+              "buildTarget": "PharmacyInventory.Web:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
         },
+
         "test": {
           "builder": "@angular/build:unit-test"
         }

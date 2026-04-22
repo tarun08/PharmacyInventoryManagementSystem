@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Medicine } from '../../models/medicine.model';
 import { CommonModule } from '@angular/common';
 import { ExpiryColorPipe } from '../../../shared/pipes/expiry-color-pipe';
@@ -6,6 +6,7 @@ import { InverntoryColorPipePipe } from '../../../shared/pipes/inverntory-color-
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MedecineDialogComponent } from '../../../shared/components/medecine-dialog-component/medecine-dialog-component';
+import { InventoryService } from '../../services/inventory-service';
 
 @Component({
     selector: 'app-inventory-component',
@@ -16,8 +17,10 @@ import { MedecineDialogComponent } from '../../../shared/components/medecine-dia
 })
 export class InventoryComponent implements OnInit {
 
-    medicines: Medicine[] = [];
-    searchText: string = '';
+    medicines = signal<Medicine[]>([]);
+    searchText = signal<string>('');
+
+    private inventoryService = inject(InventoryService);
 
     constructor(private dialog: MatDialog) {
 
@@ -28,74 +31,32 @@ export class InventoryComponent implements OnInit {
     }
 
     getMedicines() {
-        const medicines = [
-            {
-                "id": 1,
-                "fullName": "Paracetamol 500mg",
-                "notes": "Used for fever and mild pain relief",
-                "expiryDate": "2026-12-31",
-                "quantity": 25,
-                "price": 10.50,
-                "brand": "Cipla"
+        this.inventoryService.getInventory().subscribe({
+            next: (data) => {
+                this.medicines.set(data.map(med => ({
+                    ...med,
+                    expiryDate: new Date(med.expiryDate)
+                })));
             },
-            {
-                "id": 2,
-                "fullName": "Ibuprofen 200mg",
-                "notes": "Anti-inflammatory and pain reliever",
-                "expiryDate": "2026-06-15",
-                "quantity": 8,
-                "price": 15.00,
-                "brand": "Dr. Reddy's"
-            },
-            {
-                "id": 3,
-                "fullName": "Amoxicillin 250mg",
-                "notes": "Antibiotic for bacterial infections",
-                "expiryDate": "2025-11-10",
-                "quantity": 5,
-                "price": 45.75,
-                "brand": "Sun Pharma"
-            },
-            {
-                "id": 4,
-                "fullName": "Cetirizine 10mg",
-                "notes": "Antihistamine for allergy relief",
-                "expiryDate": "2027-03-20",
-                "quantity": 50,
-                "price": 12.00,
-                "brand": "Zydus"
-            },
-            {
-                "id": 5,
-                "fullName": "Azithromycin 500mg",
-                "notes": "Broad-spectrum antibiotic",
-                "expiryDate": "2025-09-05",
-                "quantity": 12,
-                "price": 89.99,
-                "brand": "Alkem"
-            },
-            {
-                "id": 6,
-                "fullName": "Metformin 500mg",
-                "notes": "Used for type 2 diabetes management",
-                "expiryDate": "2027-01-01",
-                "quantity": 100,
-                "price": 5.25,
-                "brand": "USV"
-            }];
-
-        this.medicines = medicines.map(med => ({
-            ...med,
-            expiryDate: new Date(med.expiryDate)
-        }));
+            error: (err) => console.error('Error fetching medicines', err)
+        });
     }
 
     search() {
-        this.medicines = this.medicines.filter(med => med.fullName.toLowerCase().includes(this.searchText.toLowerCase()));
+        this.inventoryService.getInventory(this.searchText()).subscribe({
+            next: (data) => {
+                this.medicines.set(data.map(med => ({
+                    ...med,
+                    expiryDate: new Date(med.expiryDate)
+                })));
+            },
+            error: (err) => console.error('Error searching medicines', err)
+        });
     }
 
+
     clearSearch() {
-        this.searchText = '';
+        this.searchText.set('');
         this.getMedicines();
     }
 
@@ -108,7 +69,7 @@ export class InventoryComponent implements OnInit {
             if (result) {
                 console.log('Received from modal:', result);
 
-                this.medicines.push(result);
+                this.medicines.update(prev => [...prev, result]);
             }
         });
     }

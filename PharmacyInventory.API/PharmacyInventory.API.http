@@ -1,6 +1,6 @@
-@PharmacyInventory.API_HostAddress = http://localhost:5183
+@PharmacyInventory.API_HostAddress = http://localhost:5183/api
 
-GET {{PharmacyInventory.API_HostAddress}}/weatherforecast/
+GET {{PharmacyInventory.API_HostAddress}}/inventory?searchName=
 Accept: application/json
 
 ###

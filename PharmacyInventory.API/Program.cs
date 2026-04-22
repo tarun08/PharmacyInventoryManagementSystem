@@ -1,4 +1,7 @@
 
+using PharmacyInventory.API.Services.Implementations;
+using PharmacyInventory.API.Services.Interfaces;
+
 namespace PharmacyInventory.API
 {
     public class Program
@@ -12,6 +15,20 @@ namespace PharmacyInventory.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp",
+                    policy =>
+                    {
+                        policy
+                            .WithOrigins("http://localhost:4200")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
+            builder.Services.AddScoped<IInventoryService, InventoryService>();
 
             var app = builder.Build();
 

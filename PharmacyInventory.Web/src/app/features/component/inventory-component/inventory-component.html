@@ -9,7 +9,7 @@
                 <button class="search-button" (click)="search()">Search</button>
                 <button class="clear-button" (click)="clearSearch()">Clear</button>
             </div>
-            <button class="add-button" (click)="openAddMedicineModal()">+ Add Medicine</button>
+            <button class="add-button" (click)='openAddMedicineModal()'>+ Add Medicine</button>
         </div>
     </div>
 
@@ -25,7 +25,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let med of medicines">
+                @for (med of medicines(); track med.guid) {
+                <tr>
                     <td>{{ med.fullName }}</td>
                     <td [style.background-color]="med.expiryDate | expiryColor">
                         {{ med.expiryDate | date:'mediumDate' }}
@@ -36,6 +37,7 @@
                     <td>{{ med.price | number:'1.2-2' }}</td>
                     <td>{{ med.brand }}</td>
                 </tr>
+                }
             </tbody>
         </table>
     </div>

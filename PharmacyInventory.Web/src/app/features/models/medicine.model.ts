@@ -1,5 +1,5 @@
 export interface Medicine {
-  id: number;
+  guid: string;
   fullName: string;
   notes: string;
   expiryDate: Date;
