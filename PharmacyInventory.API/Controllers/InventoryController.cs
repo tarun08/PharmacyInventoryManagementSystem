@@ -18,13 +18,48 @@ namespace PharmacyInventory.API.Controllers
         [HttpGet]
         public ActionResult<List<Medicine>> Get([FromQuery] string? searchName, [FromQuery] int offset = 0, [FromQuery] int limit = 10)
         {
-            return _inventoryService.GetAll(searchName, limit, offset);
+            try
+            {
+                var medicines = _inventoryService.GetAll(searchName, limit, offset);
+        
+                if (medicines == null || !medicines.Any())
+                {
+                    return NotFound("No medicines found.");
+                }
+        
+                return Ok(medicines);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while retrieving medicines.");
+            }
         }
 
         [HttpPost]
-        public ActionResult<bool> Post([FromBody] List<Medicine> medicine)
+        public ActionResult<bool> Post([FromBody] List<Medicine> medicines)
         {
-            return _inventoryService.Add(medicine);
+            if (medicines == null || !medicines.Any())
+            {
+                return BadRequest("Medicine list cannot be empty.");
+            }
+            
+            try
+            {
+                bool success = _inventoryService.Add(medicines);
+        
+                if (success)
+                {
+                    return Ok(true);
+                }        
+                else
+                {
+                    return StatusCode(500, "Failed to add medicines.");
+                }                
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected error occurred.");
+            }
         }
     }
 }
